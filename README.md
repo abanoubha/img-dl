@@ -18,8 +18,7 @@ LET'S IMPLEMET THIS IDEA IN GO
 ! D O N E !
 
 # Download All Images From a Specific website
-I will made this in the next video! like and subscribe to watch the next amazing video
+I will develop it further to download all images from a website url by crawling its webpages.
 
-all github and social links are in the description below!
-
-bye!!
+## Links
+Video: [coding a tool to download all images from a webpage url in Go](youtube.com)
