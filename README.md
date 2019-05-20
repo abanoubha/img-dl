@@ -20,5 +20,15 @@ LET'S IMPLEMET THIS IDEA IN GO
 # Download All Images From a Specific website
 I will develop it further to download all images from a website url by crawling its webpages.
 
+# Installation
+build the CLI program using this command
+```Go
+go build main.go
+```
+run the tool using this command
+```Go
+./main get https://twitter.com/devabanoub
+```
+
 ## Links
-Video: [coding a tool to download all images from a webpage url in Go](youtube.com)
+Video: [coding a tool to download all images from a webpage url in Go](https://youtu.be/qJ5RlAFk5QI)
