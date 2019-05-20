@@ -2,20 +2,16 @@
 Images Download Tool written in Go
 
 # Download All Images From Spicific webpage
-- cURL the webpage
-- get the links of all Images
-- download all images into a known directory (locally)
 
-LET'S TEST THE IDEA MANUALLY
+steps to test the idea :
+1. cURL the webpage
+2. get the links of all Images
+3. download all images into a known directory (locally)
 
-regex for all jpg and png files: [a-zA-Z0-9/_.:-]+.(jpg|png)
-
-get all image files into array, then loop for download 'em all
-_note_: if the file starts with // then replace it with https://
-
-
-LET'S IMPLEMET THIS IDEA IN GO
-! D O N E !
+Notes :
+- regex for all jpg and png files: `[a-zA-Z0-9/_.:-]+.(jpg|png)`
+- get all image files into array, then loop for download them all
+- if the file starts with `//` then replace it with `https://` or add `http:` before `//`.
 
 # Download All Images From a Specific website
 I will develop it further to download all images from a website url by crawling its webpages.
