@@ -30,7 +30,7 @@ func getVersion() *cobra.Command {
 		Short:   "Get the current version number of img-dl",
 		Aliases: []string{"v", "V", "Version", "VERSION"},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			cmd.Println("img-dl v0.1")
+			cmd.Println("img-dl v0.2.0")
 			return nil
 		},
 	}
