@@ -24,13 +24,18 @@ I will develop it further to download all images from a website url by crawling 
 
 build the CLI program using this command
 
-```Go
+```sh
+# download dependencies
+go mod tidy
+
+# build the project to get the executable app
 go build -o imgdl .
 ```
 
 run the tool using this command
 
-```Go
+```sh
+# run the app to download all images from the URL (webpage)
 ./imgdl get https://x.com/abanoubha
 ```
 
