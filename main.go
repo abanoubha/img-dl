@@ -17,6 +17,8 @@ var (
 	get     string
 )
 
+const VERSION = "0.2.1"
+
 func main() {
 	rootCmd := &cobra.Command{
 		Use:   "img-dl",
@@ -34,27 +36,27 @@ img-dl -g x.com/abanoubha # download all images shown in the webpage`,
 		if get != "" {
 			getFileFromUrl(get)
 		} else if version {
-			fmt.Println(`
-img-dl v0.2.0
+			fmt.Printf(`
+img-dl v%v
 
 Software Developer  : Abanoub Hanna
 Source code         : https://github.com/abanoubha/gobrew
 X Platform          : https://x.com/@AbanoubHA
-Developer's Website : https://AbanoubHanna.com`)
+Developer's Website : https://AbanoubHanna.com`, VERSION)
 		} else {
-			fmt.Println(`
+			fmt.Printf(`
 You need to specify add a flag.
 
 Example:
   img-dl -v # show version
   img-dl -g x.com/abanoubha # download all images shown in the webpage
 
-img-dl v0.2.0
+img-dl v%v
 
 Software Developer  : Abanoub Hanna
 Source code         : https://github.com/abanoubha/gobrew
 X Platform          : https://x.com/@AbanoubHA
-Developer's Website : https://AbanoubHanna.com`)
+Developer's Website : https://AbanoubHanna.com`, VERSION)
 		}
 	}
 
