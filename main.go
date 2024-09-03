@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"os"
@@ -11,70 +12,90 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	version bool
+	get     string
+)
+
 func main() {
-	cmd := &cobra.Command{
-		Use:          "img-dl",
-		Short:        "Image Downloader",
-		SilenceUsage: true,
+	rootCmd := &cobra.Command{
+		Use:   "img-dl",
+		Short: "Download all images from a webpage",
+		Long:  "Download all images from a webpage",
+		Example: `img-dl -v # show version
+img-dl -g x.com/abanoubha # download all images shown in the webpage`,
 	}
-	cmd.AddCommand(getVersion(), getFileFromUrl())
-	if err := cmd.Execute(); err != nil {
+
+	rootCmd.Flags().BoolVarP(&version, "version", "v", false, "show the release version of img-dl")
+
+	rootCmd.Flags().StringVarP(&get, "get", "g", "", "download all images shown in the specified webpage")
+
+	rootCmd.Run = func(cmd *cobra.Command, args []string) {
+		if get != "" {
+			getFileFromUrl(get)
+		} else if version {
+			fmt.Println(`
+img-dl v0.2.0
+
+Software Developer  : Abanoub Hanna
+Source code         : https://github.com/abanoubha/gobrew
+X Platform          : https://x.com/@AbanoubHA
+Developer's Website : https://AbanoubHanna.com`)
+		} else {
+			fmt.Println(`
+You need to specify add a flag.
+
+Example:
+  img-dl -v # show version
+  img-dl -g x.com/abanoubha # download all images shown in the webpage
+
+img-dl v0.2.0
+
+Software Developer  : Abanoub Hanna
+Source code         : https://github.com/abanoubha/gobrew
+X Platform          : https://x.com/@AbanoubHA
+Developer's Website : https://AbanoubHanna.com`)
+		}
+	}
+
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Println(err)
 		os.Exit(1)
 	}
 }
 
-func getVersion() *cobra.Command {
-	return &cobra.Command{
-		Use:     "version",
-		Short:   "Get the current version number of img-dl",
-		Aliases: []string{"v", "V", "Version", "VERSION"},
-		RunE: func(cmd *cobra.Command, args []string) error {
-			cmd.Println("img-dl v0.2.0")
-			return nil
-		},
+func getFileFromUrl(webpage string) {
+	// download the webpage itself
+	resp, err := http.Get(webpage)
+	if err != nil {
+		fmt.Println("No Internet Connection!")
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("no webpage body!!")
+	}
+
+	r, _ := regexp.Compile("[a-zA-Z0-9/_.:-]+.(jpg|jpeg|png|webp|avif)")
+	// cmd.Println(r.FindAllString(string(body), -1))
+	arr := r.FindAllString(string(body), -1)
+	for i := 0; i < len(arr); i++ {
+		if strings.HasPrefix(arr[i], "//") {
+			arr[i] = "https:" + arr[i]
+		}
+		if strings.HasPrefix(arr[i], "/") {
+			arr[i] = webpage + arr[i]
+		}
+		fileName := filepath.Base(arr[i])
+		if err := downloadFile(fileName, arr[i]); err != nil {
+			panic(err)
+		}
+		fmt.Println("downloaded image : ", arr[i])
 	}
 }
 
-func getFileFromUrl() *cobra.Command {
-	return &cobra.Command{
-		Use:     "get",
-		Aliases: []string{"down", "download", "grap"},
-		Short:   "Download all images from a specific url from the Internet",
-		Args:    cobra.MinimumNArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			// download the webpage itself
-			resp, err := http.Get(args[0]) //get written url by args[0]
-			if err != nil {
-				cmd.Println("No Internet Connection!")
-			}
-			defer resp.Body.Close()
-			body, err := io.ReadAll(resp.Body)
-			if err != nil {
-				cmd.Println("no webpage body!!")
-			}
-			r, _ := regexp.Compile("[a-zA-Z0-9/_.:-]+.(jpg|png)")
-			// cmd.Println(r.FindAllString(string(body), -1))
-			arr := r.FindAllString(string(body), -1)
-			for i := 0; i < len(arr); i++ {
-				if strings.HasPrefix(arr[i], "//") {
-					arr[i] = "https:" + arr[i]
-				}
-				if strings.HasPrefix(arr[i], "/") {
-					arr[i] = args[0] + arr[i]
-				}
-				fileName := filepath.Base(arr[i])
-				if err := DownloadFile(fileName, arr[i]); err != nil {
-					panic(err)
-				}
-				cmd.Println("downloaded image : ", arr[i])
-			}
-			return nil
-		},
-	}
-}
-
-func DownloadFile(filepath string, url string) error {
-
+func downloadFile(filepath string, url string) error {
 	// Get the data
 	resp, err := http.Get(url)
 	if err != nil {
