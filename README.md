@@ -20,7 +20,7 @@ Notes :
 
 I will develop it further to download all images from a website url by crawling its webpages.
 
-## Installation
+## Build from source
 
 build the CLI program using this command
 
@@ -37,6 +37,12 @@ run the tool using this command
 ```sh
 # run the app to download all images from the URL (webpage)
 ./imgdl get https://x.com/abanoubha
+```
+
+## Installation
+
+```sh
+go install github.com/abanoubha/img-dl
 ```
 
 ## Links
