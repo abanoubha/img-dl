@@ -2,7 +2,6 @@ package main
 
 import (
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -49,7 +48,7 @@ func getFileFromUrl() *cobra.Command {
 				cmd.Println("No Internet Connection!")
 			}
 			defer resp.Body.Close()
-			body, err := ioutil.ReadAll(resp.Body)
+			body, err := io.ReadAll(resp.Body)
 			if err != nil {
 				cmd.Println("no webpage body!!")
 			}
