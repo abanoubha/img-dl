@@ -1,4 +1,4 @@
-module github.com/abanoubha/img-dl.git
+module github.com/abanoubha/img-dl
 
 go 1.23.0
 
